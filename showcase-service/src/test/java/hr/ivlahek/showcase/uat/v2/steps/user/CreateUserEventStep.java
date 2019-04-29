@@ -9,7 +9,7 @@ import hr.ivlahek.showcase.event.dto.CreateUserCommandBuilder;
 import hr.ivlahek.showcase.mapping.JsonConverter;
 import hr.ivlahek.showcase.persistence.entity.UserAccount;
 import hr.ivlahek.showcase.persistence.repository.UserAccountRepository;
-import hr.ivlahek.showcase.uat.v1.UatSuiteTest;
+import hr.ivlahek.showcase.uat.v2.UatSuiteTest;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static hr.ivlahek.showcase.uat.v1.UatSuiteTest.embeddedKafka;
+import static hr.ivlahek.showcase.uat.v2.UatSuiteTest.embeddedKafka;
 
 @Service
 public class CreateUserEventStep implements CreateUserStep {

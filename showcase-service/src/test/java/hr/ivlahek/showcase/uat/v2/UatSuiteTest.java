@@ -1,6 +1,5 @@
-package hr.ivlahek.showcase.uat.v1;
+package hr.ivlahek.showcase.uat.v2;
 
-import hr.ivlahek.showcase.uat.v2.UatStepsTest;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -19,7 +18,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({UatStepsTest.class})
+@Suite.SuiteClasses({TestUatSteps.class})
 public class UatSuiteTest {
 
     public static KafkaMessageListenerContainer<String, String> container;

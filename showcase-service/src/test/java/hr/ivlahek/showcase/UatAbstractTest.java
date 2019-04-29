@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Category(IntegrationTest.class)
 @ActiveProfiles(profiles = "kafka-test")
-public class UatAbstractTest {
+public abstract class UatAbstractTest {
     @Autowired
     protected
     OrganizationRepository organizationRepository;

@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
 
-public class UatStepsTest extends UatAbstractTest {
-
+public class TestUatSteps extends UatAbstractTest {
     @Autowired
     private CreateOrganizationRestStep createOrganizationRestStep;
     @Autowired
