@@ -10,20 +10,14 @@ import hr.ivlahek.showcase.mapping.JsonConverter;
 import hr.ivlahek.showcase.persistence.entity.MobileApplication;
 import hr.ivlahek.showcase.persistence.repository.MobileApplicationRepository;
 import hr.ivlahek.showcase.persistence.repository.UserAccountRepository;
-import hr.ivlahek.showcase.uat.v2.UatSuiteTest;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import static hr.ivlahek.showcase.uat.v2.UatSuiteTest.embeddedKafka;
 
 @Service
 public class CreateMobileAppEventStep implements CreateMobileAppStep {
@@ -36,23 +30,20 @@ public class CreateMobileAppEventStep implements CreateMobileAppStep {
     private JsonConverter jsonConverter;
 
     protected TestRestTemplate restTemplate;
+    private KafkaProducer producer;
+    private Consumer<String, String> consumer;
 
 
     @Override
     public MobileApplicationDTO createMobileApp(UserAccountDTO userAccountDTO) throws InterruptedException {
-        Map<String, Object> senderProps = KafkaTestUtils.producerProps(embeddedKafka.getEmbeddedKafka());
-
-        KafkaProducer<Integer, String> producer = new KafkaProducer<>(senderProps);
         CreateMobileApplicationDTO createMobileApplicationDTO = CreateMobileApplicationDTOBuilder.aCreateMobileApplicationDTO().withUserAccountId(userAccountDTO.getId()).build();
         CreateMobileApplicationCommand createMobileApplicationCommand = CreateMobileApplicationCommandBuilder.aCreateMobileApplicationCommand()
                 .withCreateMobileApplicationDTO(createMobileApplicationDTO)
                 .withOrganizationId(userAccountDTO.getOrganizationId()).build();
 
-        producer.send(new ProducerRecord<>("showcase-topic", 0, 0, jsonConverter.write(createMobileApplicationCommand)));
+        producer.send(new ProducerRecord<>("showcase-topic", 0, null, jsonConverter.write(createMobileApplicationCommand)));
 
-        ConsumerRecord<String, String> received = UatSuiteTest.records.poll(10, TimeUnit.SECONDS);
-        System.out.println(received);
-        Thread.sleep(500);
+        Thread.sleep(2000);
         List<MobileApplication> mobileApplications = mobileApplicationRepository.findByName(createMobileApplicationDTO.getName());
 
         MobileApplication mobileApplication = mobileApplications.get(0);
@@ -64,5 +55,13 @@ public class CreateMobileAppEventStep implements CreateMobileAppStep {
 
     public void setRestTemplate(TestRestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    public void setProducer(KafkaProducer producer) {
+        this.producer = producer;
+    }
+
+    public void setConsumer(Consumer<String, String> consumer) {
+        this.consumer = consumer;
     }
 }

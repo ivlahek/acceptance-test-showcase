@@ -31,11 +31,16 @@ public class TestUatSteps extends UatAbstractTest {
 
     @Before
     public void setUp() {
+        super.setUp();
         createOrganizationRestStep.setRestTemplate(testRestTemplate);
         createMobileAppStep.setRestTemplate(testRestTemplate);
+        createMobileAppEventStep.setConsumer(consumer);
+        createMobileAppEventStep.setProducer(producer);
         createUserRestStep.setRestTemplate(testRestTemplate);
         createMobileAppEventStep.setRestTemplate(testRestTemplate);
         sendNotificationStep.setTestRestTemplate(testRestTemplate);
+        createUserEventStep.setConsumer(consumer);
+        createUserEventStep.setProducer(producer);
     }
 
     @Test
