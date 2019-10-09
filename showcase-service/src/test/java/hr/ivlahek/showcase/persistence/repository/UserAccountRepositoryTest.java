@@ -5,7 +5,7 @@ import hr.ivlahek.showcase.persistence.entity.UserAccountBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class UserAccountDTORepositoryTest extends RepositoryTest {
+public class UserAccountRepositoryTest extends RepositoryTest {
 
     @Autowired
     private UserAccountRepository userAccountRepository;
@@ -17,6 +17,8 @@ public class UserAccountDTORepositoryTest extends RepositoryTest {
 
         //OPERATE
         userAccountRepository.save(userAccount);
+
+
     }
 
 

@@ -4,9 +4,8 @@ import hr.ivlahek.showcase.RestIntegrationTest;
 import hr.ivlahek.showcase.dto.user.CreateUserAccountDTO;
 import hr.ivlahek.showcase.dto.user.UserAccountDTO;
 import hr.ivlahek.showcase.dto.user.UserAccountEndpoints;
+import hr.ivlahek.showcase.persistence.asserter.UserAccountAsserter;
 import hr.ivlahek.showcase.persistence.entity.UserAccount;
-import hr.ivlahek.showcase.persistence.entity.UserAccountBuilder;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -30,7 +29,12 @@ public class UserAccountControllerTest extends RestIntegrationTest {
 
         //CHECK
         assertThat(responseEntity.getBody().getId()).isNotNull();
-        assertThat(userAccountRepository.findById(responseEntity.getBody().getId())).isNotNull();
+        UserAccount userAccount = userAccountRepository.findById(responseEntity.getBody().getId()).get();
+        assertThat(userAccount).isNotNull();
+        new UserAccountAsserter()
+                .withOrganizationId(organization.getId())
+                .assertUserAccount(userAccount, createUserAccountDTO);
+
     }
 
     @Test
@@ -40,5 +44,8 @@ public class UserAccountControllerTest extends RestIntegrationTest {
 
         //CHECK
         assertThat(responseEntity.getBody().getId()).isEqualTo(userAccount.getId());
+        new UserAccountAsserter()
+                .withOrganizationId(organization.getId())
+                .assertUserAccount(responseEntity.getBody(), userAccount);
     }
 }
